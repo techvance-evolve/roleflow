@@ -14,7 +14,8 @@
     "postinstall.mjs",
     "preuninstall.mjs",
     ".env.example",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "postinstall": "node postinstall.mjs",
@@ -24,5 +25,11 @@
   "peerDependencies": {
     "@opencode-ai/plugin": "*"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "author": "Manuel Rodrigues (Techvance Evolve)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/techvance-evolve/roleflow.git"
+  },
+  "keywords": ["opencode", "opencode-plugin", "ai", "agents", "glm", "kimi"]
 }

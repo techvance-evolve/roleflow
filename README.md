@@ -55,7 +55,7 @@ npm publish --access public
 
 ## Estructura del repo
 ```
-ai-plugin/
+roleflow/
   src/index.ts            <- hooks vivos (routing, recorte, compactación)
   agents/*.md             <- 4 roles
   skills/*/SKILL.md       <- 2 skills
