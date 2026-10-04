@@ -1,5 +1,7 @@
 # Roleflow (plugin OpenCode, público)
 
+[![npm version](https://img.shields.io/npm/v/roleflow.svg)](https://www.npmjs.com/package/roleflow) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+
 Un paquete público = toda tu estructura de desarrollo con IA. Lo actualizas 1 vez, todos tus proyectos, tu PC y cualquier server lo heredan. Nada de copiar a mano.
 
 ## Qué trae
