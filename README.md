@@ -47,11 +47,24 @@ El setup interactivo (`npm run setup`) las pide ocultando lo tecleado, las guard
 - Cambios del sistema: se hacen aquí 1 vez y se publica nueva versión (`0.1.0` → `0.2.0`).
 - Cada proyecto/server sube el pin cuando quiere. `latest` solo para pruebas.
 
-## Publicar nueva versión (mantenedor)
+## Sacar nueva versión (mantenedor)
+
 ```sh
-npm login
+# 1. ver qué haría (no escribe nada):
+npm run release -- minor --dry-run
+# patch | minor | major | 0.2.0
+
+# 2. bump real (valida ficheros, .gitignore, .env ignorado, npm pack --dry-run):
+npm run release -- minor
+
+# 3. revisar + publicar (lo haces tú):
+git add package.json
+git commit -m "release: v0.2.0"
+git tag v0.2.0 && git push && git push --tags
 npm publish --access public
 ```
+
+El script nunca hace `push` ni `publish` solo. Si falta un fichero o `.env` no está ignorado, aborta.
 
 ## Estructura del repo
 ```
@@ -60,6 +73,7 @@ roleflow/
   agents/*.md             <- 4 roles
   skills/*/SKILL.md       <- 2 skills
   scripts/setup.mjs       <- setup interactivo de keys (npm run setup)
+  scripts/release.mjs     <- flujo release (npm run release -- minor)
   .env.example            <- placeholders, sin secretos
   postinstall.mjs         <- compat: copia agents/skills al config local
   preuninstall.mjs        <- limpieza al desinstalar

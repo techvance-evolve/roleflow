@@ -20,7 +20,8 @@
   "scripts": {
     "postinstall": "node postinstall.mjs",
     "preuninstall": "node preuninstall.mjs",
-    "setup": "node scripts/setup.mjs"
+    "setup": "node scripts/setup.mjs",
+    "release": "node scripts/release.mjs"
   },
   "peerDependencies": {
     "@opencode-ai/plugin": "*"
