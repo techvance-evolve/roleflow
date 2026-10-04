@@ -30,7 +30,7 @@ set -a; source .env; set +a
 
 Proyectos estables pinean versión para no romperse con updates:
 ```json
-{ "plugin": ["roleflow@0.1.0"] }
+{ "plugin": ["roleflow@1.0.0"] }
 ```
 
 ## Dependencias: API keys
