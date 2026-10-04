@@ -1,0 +1,28 @@
+{
+  "name": "roleflow",
+  "version": "0.1.0",
+  "description": "Roleflow: sistema OpenCode portable con roles por responsabilidad + routing barato + ahorro de tokens. Público, instalable desde cualquier PC o server con una línea en opencode.json.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "files": [
+    "src",
+    "agents",
+    "skills",
+    "scripts",
+    "postinstall.mjs",
+    "preuninstall.mjs",
+    ".env.example",
+    "README.md"
+  ],
+  "scripts": {
+    "postinstall": "node postinstall.mjs",
+    "preuninstall": "node preuninstall.mjs",
+    "setup": "node scripts/setup.mjs"
+  },
+  "peerDependencies": {
+    "@opencode-ai/plugin": "*"
+  },
+  "license": "MIT"
+}
