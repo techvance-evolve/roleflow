@@ -32,7 +32,7 @@ El plugin (`RoleflowPlugin` en `src/index.ts`) autocarga `.env` desde la raíz d
 
 Proyectos estables pinean versión para no romperse con updates:
 ```json
-{ "plugin": ["roleflow@1.0.0"] }
+{ "plugin": ["roleflow@1.0.1"] }
 ```
 
 ## Dependencias: API keys
