@@ -1,6 +1,6 @@
-// Copia agents/ y skills/ del paquete al config de OpenCode.
-// OpenCode hoy no registra agentes dinámicos desde el plugin de forma estable,
-// por eso este postinstall es el puente estándar (ver opencode-plugin-opencoder).
+// Copies the package agents/ and skills/ into the OpenCode config.
+// OpenCode does not reliably register dynamic agents from the plugin yet,
+// so this postinstall is the standard bridge (see opencode-plugin-opencoder).
 import { cpSync, mkdirSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";

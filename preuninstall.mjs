@@ -1,4 +1,4 @@
-// Limpieza al desinstalar: borra solo los archivos de este paquete.
+// Cleanup on uninstall: removes only this package's files.
 import { rmSync, readdirSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { homedir } from "node:os";

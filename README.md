@@ -26,8 +26,8 @@ npm install roleflow
 3. Configura las keys con el setup interactivo (no quedan en el repo):
 ```sh
 npm run setup
-set -a; source .env; set +a
 ```
+El plugin (`RoleflowPlugin` en `src/index.ts`) autocarga `.env` desde la raíz del proyecto o `~/.config/opencode/.env`. Ya no necesitas `source .env`; si prefieres exportarlas a mano también vale.
 4. Abre OpenCode en tu proyecto. El plugin aplica routing + recorte + compactación en vivo; el `postinstall` deja agentes/skills en `~/.config/opencode/` solo por compatibilidad.
 
 Proyectos estables pinean versión para no romperse con updates:
@@ -43,7 +43,7 @@ Proyectos estables pinean versión para no romperse con updates:
 | `OPENCODE_GO_API_KEY` | Pool barato Go (flash / k2.7-code / qwen-plus) | opencode.ai → Go → API key | Sí |
 | `OPENCODE_ZEN_API_KEY` | Buffer pay-as-you-go para picos | opencode.ai → Zen | No |
 
-El setup interactivo (`npm run setup`) las pide ocultando lo tecleado, las guarda en `.env` (gitignored, nunca se publica) y te muestra cómo exportarlas. Hay un `.env.example` con placeholders como guía. Si prefieres no usar `.env`, exporta las mismas variables en tu server por el método que uses (systemd env, Docker secrets, CI secrets, etc).
+El setup interactivo (`npm run setup`) las pide ocultando lo tecleado y las guarda en `.env` (gitignored, nunca se publica). El plugin las autocarga al arrancar. Hay un `.env.example` con placeholders como guía. Si prefieres no usar `.env`, exporta las mismas variables en tu server por el método que uses (systemd env, Docker secrets, CI secrets, etc).
 
 ## Actualizar
 - Cambios del sistema: se hacen aquí 1 vez y se publica nueva versión (`0.1.0` → `0.2.0`).
