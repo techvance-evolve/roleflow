@@ -1,6 +1,6 @@
 {
   "name": "roleflow",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Roleflow: sistema OpenCode portable con roles por responsabilidad + routing barato + ahorro de tokens. Público, instalable desde cualquier PC o server con una línea en opencode.json.",
   "type": "module",
   "exports": {

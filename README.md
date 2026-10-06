@@ -15,25 +15,19 @@ Un paquete público = toda tu estructura de desarrollo con IA. Lo actualizas 1 v
 
 ## Instalación desde cualquier lugar
 
-1. En el `opencode.json` de tu proyecto agrega:
+1. En el `opencode.json` de tu proyecto agrega (pineado, recomendado):
 ```json
-{ "$schema": "https://opencode.ai/config.json", "plugin": ["roleflow"] }
+{ "$schema": "https://opencode.ai/config.json", "plugin": ["roleflow@1.0.2"] }
 ```
-2. Instala (el usuario lo corre en su máquina/server):
+OpenCode instala el plugin solo. No necesitas `npm install roleflow` en el repo destino.
+2. Pon tus keys en un `.env` (raíz del proyecto o `~/.config/opencode/.env` para reusar en todos):
 ```sh
-npm install roleflow
+ZAI_API_KEY=...
+OPENCODE_GO_API_KEY=...
+# opcional: OPENCODE_ZEN_API_KEY=...
 ```
-3. Configura las keys con el setup interactivo (no quedan en el repo):
-```sh
-npm run setup
-```
-El plugin (`RoleflowPlugin` en `src/index.ts`) autocarga `.env` desde la raíz del proyecto o `~/.config/opencode/.env`. Ya no necesitas `source .env`; si prefieres exportarlas a mano también vale.
-4. Abre OpenCode en tu proyecto. El plugin aplica routing + recorte + compactación en vivo; el `postinstall` deja agentes/skills en `~/.config/opencode/` solo por compatibilidad.
-
-Proyectos estables pinean versión para no romperse con updates:
-```json
-{ "plugin": ["roleflow@1.0.0"] }
-```
+¿Primera vez? Genera el `.env` desde el clon de roleflow con `npm run setup` y cópialo donde lo necesites. El plugin (`RoleflowPlugin`) lo autocarga, no necesitas `source .env`.
+3. Abre OpenCode en tu proyecto. El plugin aplica routing + recorte + compactación en vivo; el `postinstall` deja agentes/skills en `~/.config/opencode/` solo por compatibilidad.
 
 ## Dependencias: API keys
 
