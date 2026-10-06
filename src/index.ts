@@ -1,6 +1,8 @@
 import type { Plugin } from "@opencode-ai/plugin";
-import { existsSync, readFileSync } from "node:fs";
-import { join } from "node:path";
+import { cpSync, existsSync, mkdirSync, readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+import { homedir } from "node:os";
 
 // Auto-loads .env (project root or ~/.config/opencode/.env) so manual `source` is not required.
 // Never overwrites already exported vars. .env stays gitignored, never published.
@@ -31,9 +33,35 @@ function loadDotEnv(): void {
   } catch {}
 }
 
+// Self-installs agents/skills into ~/.config/opencode on every startup.
+// OpenCode installs npm plugins via Bun into its own cache and may skip the
+// npm `postinstall` lifecycle, so relying on postinstall alone leaves fresh
+// machines without @planner/@explorer/@implementer/@reviewer. This runs inside
+// OpenCode itself (Bun handles TS), needs no system node, never throws.
+function ensureCompatFiles(): void {
+  try {
+    let pkgRoot = "";
+    try {
+      pkgRoot = dirname(dirname(fileURLToPath(import.meta.url)));
+    } catch {
+      return;
+    }
+    const dest = join(homedir(), ".config", "opencode");
+    for (const dir of ["agents", "skills"] as const) {
+      try {
+        const from = join(pkgRoot, dir);
+        if (!existsSync(from)) continue;
+        const to = join(dest, dir);
+        mkdirSync(to, { recursive: true });
+        cpSync(from, to, { recursive: true });
+      } catch {}
+    }
+  } catch {}
+}
+
 // Personal system: cheap role-based routing + automatic output trimming.
-// Agents/skills ship under ./agents and ./skills; postinstall copies them
-// to ~/.config/opencode/agents and skills (current OpenCode compat).
+// Agents/skills ship under ./agents and ./skills; they are self-installed at
+// runtime (see above) with postinstall.mjs kept as a fallback for global installs.
 // Projects can always override in their opencode.json / AGENTS.md.
 
 const MAX_OUTPUT_CHARS = 6000;
@@ -48,6 +76,7 @@ function truncate(text: string, max = MAX_OUTPUT_CHARS): string {
 
 export const RoleflowPlugin: Plugin = async (_ctx) => {
   loadDotEnv();
+  ensureCompatFiles();
   return {
     // Trims huge outputs (logs, reads, tests) before they enter context.
     // Biggest saving without quality loss: the model requests the range it needs.
