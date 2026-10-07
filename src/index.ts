@@ -99,22 +99,27 @@ export const RoleflowPlugin: Plugin = async (_ctx) => {
 
     config: async (config: any) => {
       // Cheap defaults. Projects can override them in their opencode.json.
+      // Uses the NATIVE `agent` key (OpenCode schema) - `agents` (plural) is ignored.
       // GLM volume (chat + planner) rides the Z.AI Coding Plan ($80, big quota).
       // Kimi/qwen (non-GLM) ride the OpenCode Go cheap pool.
       config.model = config.model ?? "zai-coding-plan/glm-5.3-flash";
       config.small_model = config.small_model ?? "opencode-go/qwen3.7-plus";
-      config.agents = config.agents ?? {};
-      config.agents.planner = {
+      config.agent = config.agent ?? {};
+      config.agent.planner = {
         model: "zai-coding-plan/glm-5.3",
-        ...(config.agents.planner ?? {}),
+        ...(config.agent.planner ?? {}),
       };
-      config.agents.implementer = {
+      config.agent.implementer = {
         model: "opencode-go/kimi-k2.7-code",
-        ...(config.agents.implementer ?? {}),
+        ...(config.agent.implementer ?? {}),
       };
-      config.agents.reviewer = {
+      config.agent.reviewer = {
         model: "opencode-go/qwen3.7-plus",
-        ...(config.agents.reviewer ?? {}),
+        ...(config.agent.reviewer ?? {}),
+      };
+      config.agent.explorer = {
+        model: "zai-coding-plan/glm-5.3-flash",
+        ...(config.agent.explorer ?? {}),
       };
     },
   };

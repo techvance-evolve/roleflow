@@ -18,7 +18,7 @@ Un paquete público = toda tu estructura de desarrollo con IA. Lo actualizas 1 v
 
 1. En el `opencode.json` de tu proyecto agrega (pineado, recomendado):
 ```json
-{ "$schema": "https://opencode.ai/config.json", "plugin": ["roleflow@1.0.5"] }
+{ "$schema": "https://opencode.ai/config.json", "plugin": ["roleflow@1.0.6"] }
 ```
 OpenCode instala el plugin solo. No necesitas `npm install roleflow` en el repo destino.
 2. Pon tus keys en un `.env` (raíz del proyecto o `~/.config/opencode/.env` para reusar en todos):
@@ -39,6 +39,37 @@ OPENCODE_GO_API_KEY=...
 | `OPENCODE_ZEN_API_KEY` | Buffer pay-as-you-go para picos | opencode.ai → Zen | No |
 
 El setup interactivo (`npm run setup`) las pide ocultando lo tecleado y las guarda en `.env` (gitignored, nunca se publica). El plugin las autocarga al arrancar. Hay un `.env.example` con placeholders como guía. Si prefieres no usar `.env`, exporta las mismas variables en tu server por el método que uses (systemd env, Docker secrets, CI secrets, etc).
+
+**Sobre el nombrespacing:** todos los plugins de OpenCode corren en el mismo proceso y comparten `process.env`. `ZAI_API_KEY` mantiene ese nombre porque es la que el proveedor `zai-coding-plan` de OpenCode lee de forma nativa. Los ajustes propios de roleflow siempre usan prefijo `ROLEFLOW_*`.
+
+## Customizar modelos
+
+Los defaults del plugin solo rellenan huecos: si tu proyecto (o tu config global) declara un modelo, gana el proyecto. En el `opencode.json` del proyecto:
+
+```json
+{
+  "plugin": ["roleflow@1.0.6"],
+  "model": "zai-coding-plan/glm-5.3",
+  "small_model": "opencode-go/qwen3.7-plus",
+  "agent": {
+    "planner":     { "model": "zai-coding-plan/glm-5.3" },
+    "explorer":    { "model": "zai-coding-plan/glm-5.3-flash" },
+    "implementer": { "model": "opencode-go/kimi-k2.7-code" },
+    "reviewer":    { "model": "opencode-go/qwen3.7-plus" }
+  }
+}
+```
+
+Defaults de roleflow (lo que aplica si tu config no dice lo contrario):
+
+| Rol | Modelo | Va por |
+|---|---|---|
+| chat (`model`) | `zai-coding-plan/glm-5.3-flash` | ZAI $80 |
+| `small_model` | `opencode-go/qwen3.7-plus` | Go $10 |
+| `planner` | `zai-coding-plan/glm-5.3` | ZAI $80 |
+| `explorer` | `zai-coding-plan/glm-5.3-flash` | ZAI $80 |
+| `implementer` | `opencode-go/kimi-k2.7-code` | Go $10 |
+| `reviewer` | `opencode-go/qwen3.7-plus` | Go $10 |
 
 ## Actualizar
 - Cambios del sistema: se hacen aquí 1 vez y se publica nueva versión (`0.1.0` → `0.2.0`).
