@@ -99,11 +99,13 @@ export const RoleflowPlugin: Plugin = async (_ctx) => {
 
     config: async (config: any) => {
       // Cheap defaults. Projects can override them in their opencode.json.
-      config.model = config.model ?? "opencode-go/glm-5.3-flash";
+      // GLM volume (chat + planner) rides the Z.AI Coding Plan ($80, big quota).
+      // Kimi/qwen (non-GLM) ride the OpenCode Go cheap pool.
+      config.model = config.model ?? "zai-coding-plan/glm-5.3-flash";
       config.small_model = config.small_model ?? "opencode-go/qwen3.7-plus";
       config.agents = config.agents ?? {};
       config.agents.planner = {
-        model: "opencode-go/glm-5.3",
+        model: "zai-coding-plan/glm-5.3",
         ...(config.agents.planner ?? {}),
       };
       config.agents.implementer = {

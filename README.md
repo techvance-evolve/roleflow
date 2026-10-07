@@ -5,7 +5,8 @@
 Un paquete público = toda tu estructura de desarrollo con IA. Lo actualizas 1 vez, todos tus proyectos, tu PC y cualquier server lo heredan. Nada de copiar a mano.
 
 ## Qué trae
-- 4 agentes: `planner` (glm-5.3, caro/poco uso), `explorer` (flash barato), `implementer` (k2.7-code tractor), `reviewer` (solo diff).
+- 4 agentes: `planner` (`zai-coding-plan/glm-5.3`), `explorer` (`zai-coding-plan/glm-5.3-flash`), `implementer` (`opencode-go/kimi-k2.7-code`, tractor), `reviewer` (`opencode-go/qwen3.7-plus`, solo diff).
+- Chat default en tu plan Z.AI (`glm-5.3-flash`); Kimi/qwen van por el pool barato de Go.
 - 2 skills: `create-task`, `pr-review`.
 - Hooks anti-quema: trunca outputs gigantes (`read`/`bash`/`grep` >6000 chars), preserva estado al compactar, defaults baratos que cada proyecto puede sobreescribir.
 
@@ -17,7 +18,7 @@ Un paquete público = toda tu estructura de desarrollo con IA. Lo actualizas 1 v
 
 1. En el `opencode.json` de tu proyecto agrega (pineado, recomendado):
 ```json
-{ "$schema": "https://opencode.ai/config.json", "plugin": ["roleflow@1.0.4"] }
+{ "$schema": "https://opencode.ai/config.json", "plugin": ["roleflow@1.0.5"] }
 ```
 OpenCode instala el plugin solo. No necesitas `npm install roleflow` en el repo destino.
 2. Pon tus keys en un `.env` (raíz del proyecto o `~/.config/opencode/.env` para reusar en todos):
