@@ -5,10 +5,11 @@ import { fileURLToPath } from "node:url";
 import { homedir } from "node:os";
 
 // Auto-loads .env (project root or ~/.config/opencode/.env) so manual `source` is not required.
+// Native env names only: ZAI_API_KEY (zai-coding-plan) and OPENCODE_API_KEY (opencode-go / opencode).
 // Never overwrites already exported vars. .env stays gitignored, never published.
 function loadDotEnv(): void {
   try {
-    if (process.env.ZAI_API_KEY && process.env.OPENCODE_GO_API_KEY) return;
+    if (process.env.ZAI_API_KEY && process.env.OPENCODE_API_KEY) return;
     const candidates: string[] = [join(process.cwd(), ".env")];
     const home = process.env.HOME ?? process.env.USERPROFILE;
     if (home) candidates.push(join(home, ".config", "opencode", ".env"));
@@ -30,6 +31,23 @@ function loadDotEnv(): void {
         break;
       } catch {}
     }
+  } catch {}
+}
+
+// Belt-and-suspenders: if the env vars exist, make sure the native providers
+// have their apiKey wired even if the provider scan ran before plugin init.
+function wireProviders(config: any): void {
+  try {
+    config.provider = config.provider ?? {};
+    const ensure = (id: string, apiKey: string | undefined) => {
+      if (!apiKey) return;
+      config.provider[id] = config.provider[id] ?? {};
+      config.provider[id].options = config.provider[id].options ?? {};
+      if (!config.provider[id].options.apiKey) config.provider[id].options.apiKey = apiKey;
+    };
+    ensure("opencode-go", process.env.OPENCODE_API_KEY);
+    ensure("opencode", process.env.OPENCODE_API_KEY);
+    ensure("zai-coding-plan", process.env.ZAI_API_KEY);
   } catch {}
 }
 
@@ -98,6 +116,8 @@ export const RoleflowPlugin: Plugin = async (_ctx) => {
     },
 
     config: async (config: any) => {
+      // Activate providers (env mapping + apiKey injection) before defaults.
+      wireProviders(config);
       // Cheap defaults. Projects can override them in their opencode.json.
       // Uses the NATIVE `agent` key (OpenCode schema) - `agents` (plural) is ignored.
       // GLM volume (chat + planner) rides the Z.AI Coding Plan ($80, big quota).

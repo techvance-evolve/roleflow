@@ -53,21 +53,15 @@ function mask(v) {
 const fields = [
   {
     key: "ZAI_API_KEY",
-    label: "Z.ai API key (GLM Coding Plan: planner glm-5.3)",
+    label: "Z.ai API key (GLM Coding Plan: planner glm-5.3 + flash)",
     where: "Get it in your Z.ai dashboard -> API keys",
     required: true,
   },
   {
-    key: "OPENCODE_GO_API_KEY",
+    key: "OPENCODE_API_KEY",
     label: "OpenCode Go API key (cheap pool: flash / k2.7 / qwen-plus)",
     where: "Get it at opencode.ai -> Go -> API key",
     required: true,
-  },
-  {
-    key: "OPENCODE_ZEN_API_KEY",
-    label: "OpenCode Zen API key (pay-as-you-go buffer, optional)",
-    where: "Get it at opencode.ai -> Zen. Enter to skip.",
-    required: false,
   },
 ];
 

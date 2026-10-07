@@ -18,25 +18,23 @@ Un paquete público = toda tu estructura de desarrollo con IA. Lo actualizas 1 v
 
 1. En el `opencode.json` de tu proyecto agrega (pineado, recomendado):
 ```json
-{ "$schema": "https://opencode.ai/config.json", "plugin": ["roleflow@1.0.6"] }
+{ "$schema": "https://opencode.ai/config.json", "plugin": ["roleflow@1.0.7"] }
 ```
 OpenCode instala el plugin solo. No necesitas `npm install roleflow` en el repo destino.
-2. Pon tus keys en un `.env` (raíz del proyecto o `~/.config/opencode/.env` para reusar en todos):
+2. Pon tus keys en un `.env` (raíz del proyecto o `~/.config/opencode/.env` para reusar en todos). Nombres **nativos** de OpenCode:
 ```sh
-ZAI_API_KEY=...
-OPENCODE_GO_API_KEY=...
-# opcional: OPENCODE_ZEN_API_KEY=...
+ZAI_API_KEY=...        # zai-coding-plan
+OPENCODE_API_KEY=...   # opencode-go
 ```
 ¿Primera vez? Genera el `.env` desde el clon de roleflow con `npm run setup` y cópialo donde lo necesites. El plugin (`RoleflowPlugin`) lo autocarga, no necesitas `source .env`.
 3. Abre OpenCode en tu proyecto. El plugin aplica routing + recorte + compactación en vivo y se autocopia agentes/skills a `~/.config/opencode/` en cada arranque (sin `npm install` manual).
 
 ## Dependencias: API keys
 
-| Variable | Para qué | Dónde se consigue | Obligatoria |
+| Variable | Provider nativo | Dónde se consigue | Obligatoria |
 |---|---|---|---|
-| `ZAI_API_KEY` | GLM Coding Plan (planner `glm-5.3`) | Panel de Z.ai → API keys | Sí |
-| `OPENCODE_GO_API_KEY` | Pool barato Go (flash / k2.7-code / qwen-plus) | opencode.ai → Go → API key | Sí |
-| `OPENCODE_ZEN_API_KEY` | Buffer pay-as-you-go para picos | opencode.ai → Zen | No |
+| `ZAI_API_KEY` | `zai-coding-plan` (GLM: planner + flash) | Panel de Z.ai → API keys | Sí |
+| `OPENCODE_API_KEY` | `opencode-go` (pool: k2.7-code / qwen-plus) | opencode.ai → Go → API key | Sí |
 
 El setup interactivo (`npm run setup`) las pide ocultando lo tecleado y las guarda en `.env` (gitignored, nunca se publica). El plugin las autocarga al arrancar. Hay un `.env.example` con placeholders como guía. Si prefieres no usar `.env`, exporta las mismas variables en tu server por el método que uses (systemd env, Docker secrets, CI secrets, etc).
 
@@ -48,7 +46,7 @@ Los defaults del plugin solo rellenan huecos: si tu proyecto (o tu config global
 
 ```json
 {
-  "plugin": ["roleflow@1.0.6"],
+  "plugin": ["roleflow@1.0.7"],
   "model": "zai-coding-plan/glm-5.3",
   "small_model": "opencode-go/qwen3.7-plus",
   "agent": {
