@@ -17,7 +17,7 @@ Un paquete público = toda tu estructura de desarrollo con IA. Lo actualizas 1 v
 
 1. En el `opencode.json` de tu proyecto agrega (pineado, recomendado):
 ```json
-{ "$schema": "https://opencode.ai/config.json", "plugin": ["roleflow@1.0.3"] }
+{ "$schema": "https://opencode.ai/config.json", "plugin": ["roleflow@1.0.4"] }
 ```
 OpenCode instala el plugin solo. No necesitas `npm install roleflow` en el repo destino.
 2. Pon tus keys en un `.env` (raíz del proyecto o `~/.config/opencode/.env` para reusar en todos):
@@ -50,7 +50,7 @@ El setup interactivo (`npm run setup`) las pide ocultando lo tecleado y las guar
 npm run release -- minor --dry-run
 # patch | minor | major | 0.2.0
 
-# 2. bump real (valida ficheros, .gitignore, .env ignorado, npm pack --dry-run):
+# 2. bump real (compila dist, valida ficheros, .gitignore, .env ignorado, npm pack --dry-run):
 npm run release -- minor
 
 # 3. revisar + publicar (lo haces tú):
@@ -65,7 +65,8 @@ El script nunca hace `push` ni `publish` solo. Si falta un fichero o `.env` no e
 ## Estructura del repo
 ```
 roleflow/
-  src/index.ts            <- hooks vivos (routing, recorte, compactación)
+  src/index.ts            <- source (RoleflowPlugin, ships compiled to dist/)
+  dist/index.js           <- build output, what OpenCode loads (`npm run build`)
   agents/*.md             <- 4 roles
   skills/*/SKILL.md       <- 2 skills
   scripts/setup.mjs       <- setup interactivo de keys (npm run setup)

@@ -46,6 +46,7 @@ const required = [
   "README.md",
   ".env.example",
   ".gitignore",
+  "tsconfig.json",
   "src/index.ts",
   "postinstall.mjs",
   "preuninstall.mjs",
@@ -76,8 +77,19 @@ try {
   process.exit(1);
 }
 
-// 2. npm pack --dry-run (no publish, only verifies tarball contents).
+// 2. Build dist (what OpenCode actually loads via `main`) + verify tarball.
 console.log(`\n== roleflow ${pkg.version} -> ${next} ${dryRun ? "(dry-run)" : ""} ==`);
+console.log("Building dist/...");
+try {
+  execSync("npm run build --silent", { cwd: root, stdio: "inherit" });
+} catch {
+  console.error("Build failed (`npm run build`). Aborting.");
+  process.exit(1);
+}
+if (!existsSync(join(root, "dist", "index.js"))) {
+  console.error("dist/index.js missing after build. Aborting.");
+  process.exit(1);
+}
 try {
   execSync("npm pack --dry-run", { cwd: root, stdio: "inherit" });
 } catch {
